@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bot Sinais Binance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060a;
+  --accent:#00b85c;
+  --accent-2:#00d18f;
+  --muted:#a6a6a6;
+  --cta-text:#071017;
+  --glass: rgba(255,255,255,0.04);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(180deg,#05060a,#07101a);
+  color:#eaeef2;
+  line-height:1.5;
+}
+.container{width:90%; max-width:1150px; margin:0 auto;}
+.topbar{
+  position:sticky; top:0; background:rgba(0,0,0,0.3); padding:10px 18px; display:flex; justify-content:space-between; align-items:center; z-index:1000; backdrop-filter: blur(6px);
+}
+.badge{background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:var(--cta-text); padding:6px 10px; border-radius:999px; font-weight:700;}
+.timer-small{color:var(--accent); font-weight:600;}
+.hero{padding:60px 0; display:flex; justify-content:center; align-items:center;}
+.hero-inner{display:grid; grid-template-columns:1fr 520px; gap:36px; align-items:center;}
+.hero-copy h1{font-size:2.2rem; margin-bottom:10px;}
+.hero-copy p{color:var(--muted); margin-bottom:18px;}
+.price-line{margin-bottom:12px; font-size:1.4rem;}
+.price-line .old-price{text-decoration:line-through; color:var(--muted); margin-right:10px;}
+.price-line .new-price{color:var(--accent); font-weight:800;}
+.btn-cta{
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:var(--cta-text); padding:14px 20px; border-radius:10px; font-weight:800; border:none; cursor:pointer; text-decoration:none; display:inline-block; transition:transform .14s ease;
+}
+.btn-cta:hover{transform:translateY(-3px);}
+.video-card{position:relative; border-radius:14px; overflow:hidden; max-width:100%; margin-bottom:20px;}
+.video-card img, .video-card video{width:100%; border-radius:14px;}
+.overlay-play{position:absolute; inset:0; display:flex; justify-content:center; align-items:center; cursor:pointer;}
+.features{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:40px;}
+.feature-card{background:var(--glass); padding:16px; border-radius:12px; text-align:center;}
+.feature-card img{width:100%; border-radius:8px; margin-bottom:12px;}
+.section{padding:64px 0;}
+.sticky-cta{
+  position:fixed; right:18px; bottom:18px; display:flex; gap:10px; align-items:center; background:linear-gradient(90deg, rgba(0,0,0,0.36), rgba(0,0,0,0.2)); padding:10px; border-radius:999px; box-shadow:0 12px 40px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.03);
+}
+.countdown{display:flex; gap:10px; font-weight:700; margin-top:10px;}
+.countdown .box{background:rgba(255,255,255,0.04); padding:10px 12px; border-radius:8px; color:var(--accent); min-width:50px; text-align:center;}
+footer{padding:28px 0; color:var(--muted); text-align:center; font-size:0.9rem; border-top:1px solid rgba(255,255,255,0.02);}
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;}
+  .features{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar container">
+  <div class="badge">Oferta Especial</div>
+  <div class="timer-small" id="top-timer">00:59:59</div>
+</div>
+
+<!-- Hero -->
+<div class="hero container">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <h1>Bot Sinais Binance</h1>
+
+      <!-- Linha de preço / gatilho -->
+      <div class="price-line">
+        <span class="old-price">R$50</span>
+        <span class="new-price">Só hoje R$10</span>
+      </div>
+
+      <p>Cansado de monitorar dezenas de pares ao mesmo tempo? O Bot Sinais Binance analisa mais de 30 pares simultaneamente e te envia alertas baseados em RSI, EMA e força do mercado, para você decidir se vale a pena agir.</p>
+      <a href="https://pay.hub.la/NXT53L9shBeHBzXcN2aG?_path=/checkout/NXT53L9shBeHBzXcN2aG" class="btn-cta">Quero Garantir por R$10</a>
+      <div class="countdown" id="hero-timer">
+        <div class="box" id="hours">00</div>
+        <div class="box" id="minutes">00</div>
+        <div class="box" id="seconds">00</div>
+      </div>
+    </div>
+    <div class="video-card">
+      <img id="video-poster" src="img/simples.jpg" style="cursor:pointer;">
+      <video id="hero-video" style="display:none;" poster="img/simples.jpg">
+        <source src="video/simples.mp4" type="video/mp4">
+        Seu navegador não suporta vídeo.
+      </video>
+      <div class="overlay-play">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="#00b85c">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Seção de Sinais -->
+<div class="section container">
+  <h2>Sinais em tempo real</h2>
+  <p>O Bot monitora mais de 30 pares simultaneamente e envia alertas de possíveis movimentos do mercado. Confira alguns exemplos abaixo:</p>
+  <div class="features signal-grid">
+    <div class="feature-card">
+      <img src="img/btc.jpg" alt="Sinal 1">
+      <p>Exemplo de sinal do par BTC/USDT — análise de RSI, EMA e força do mercado.</p>
+      <small>Não é recomendação de compra ou venda — apenas sinal de monitoramento.</small>
+    </div>
+    <div class="feature-card">
+      <img src="img/eth.jpg" alt="Sinal 2">
+      <p>Exemplo de sinal do par ETH/USDT — análise de RSI, EMA e força do mercado.</p>
+      <small>Não é recomendação de compra ou venda — apenas sinal de monitoramento.</small>
+    </div>
+    <div class="feature-card">
+      <img src="img/dot.jpg" alt="Sinal 3">
+      <p>Exemplo de sinal do par DOT/USDT — análise de RSI, EMA e força do mercado.</p>
+      <small>Não é recomendação de compra ou venda — apenas sinal de monitoramento.</small>
+    </div>
+  </div>
+</div>
+
+<!-- Oferta Final / CTA -->
+<div class="section container">
+  <h2>Assine agora</h2>
+  <p>Assine o Bot Sinais Binance por apenas R$10/mês. Sem vínculo. Se não quiser continuar, basta não renovar o plano — simples assim.</p>
+  <a href="https://pay.hub.la/NXT53L9shBeHBzXcN2aG?_path=/checkout/NXT53L9shBeHBzXcN2aG" class="btn-cta">Assinar Agora</a>
+</div>
+
+<!-- Sticky CTA -->
+<div class="sticky-cta pulse">
+  <a href="https://pay.hub.la/NXT53L9shBeHBzXcN2aG?_path=/checkout/NXT53L9shBeHBzXcN2aG" class="btn-cta">Assinar Agora</a>
+</div>
+
+<footer>
+  © 2025 Bot Sinais Binance. Todos os direitos reservados.
+</footer>
+
+<script>
+// Play do vídeo com poster
+const poster = document.getElementById('video-poster');
+const video = document.getElementById('hero-video');
+const playOverlay = document.querySelector('.overlay-play');
+
+playOverlay.addEventListener('click', () => {
+  poster.style.display = 'none';
+  playOverlay.style.display = 'none';
+  video.style.display = 'block';
+  video.play();
+});
+
+// Contador regressivo de 1 hora
+let endTime = new Date().getTime() + 60*60*1000;
+function updateTimer() {
+  let now = new Date().getTime();
+  let distance = endTime - now;
+  if(distance < 0) distance = 0;
+  let h = Math.floor((distance/(1000*60*60)) %24);
+  let m = Math.floor((distance/(1000*60)) %60);
+  let s = Math.floor((distance/1000)%60);
+  document.getElementById('hours').innerText = String(h).padStart(2,'0');
+  document.getElementById('minutes').innerText = String(m).padStart(2,'0');
+  document.getElementById('seconds').innerText = String(s).padStart(2,'0');
+  document.getElementById('top-timer').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+setInterval(updateTimer,1000);
+updateTimer();
+</script>
+
+</body>
+</html>
+
