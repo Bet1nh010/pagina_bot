@@ -24,6 +24,12 @@ body{
 .container{width:90%; max-width:1150px; margin:0 auto;}
 .topbar{
   position:sticky; top:0; background:rgba(0,0,0,0.3); padding:10px 18px; display:flex; justify-content:space-between; align-items:center; z-index:1000; backdrop-filter: blur(6px);
+  animation: neonPulse 1.2s infinite alternate;
+}
+@keyframes neonPulse {
+  0% {text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent-2);}
+  50% {text-shadow: 0 0 15px var(--accent), 0 0 20px var(--accent-2);}
+  100% {text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent-2);}
 }
 .badge{background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:var(--cta-text); padding:6px 10px; border-radius:999px; font-weight:700;}
 .timer-small{color:var(--accent); font-weight:600;}
@@ -36,9 +42,15 @@ body{
 .price-line .new-price{color:var(--accent); font-weight:800;}
 .btn-cta{
   background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  color:var(--cta-text); padding:14px 20px; border-radius:10px; font-weight:800; border:none; cursor:pointer; text-decoration:none; display:inline-block; transition:transform .14s ease;
+  color:var(--cta-text); padding:14px 20px; border-radius:10px; font-weight:800; border:none; cursor:pointer; text-decoration:none; display:inline-block; transition: transform .14s ease;
+  animation: pulseBtn 1.2s infinite alternate;
 }
 .btn-cta:hover{transform:translateY(-3px);}
+@keyframes pulseBtn {
+  0% {box-shadow: 0 0 8px var(--accent);}
+  50% {box-shadow: 0 0 16px var(--accent-2);}
+  100% {box-shadow: 0 0 8px var(--accent);}
+}
 .video-card{position:relative; border-radius:14px; overflow:hidden; max-width:100%; margin-bottom:20px;}
 .video-card img, .video-card video{width:100%; border-radius:14px;}
 .overlay-play{position:absolute; inset:0; display:flex; justify-content:center; align-items:center; cursor:pointer;}
@@ -47,65 +59,26 @@ body{
 .feature-card img{width:100%; border-radius:8px; margin-bottom:12px;}
 .section{padding:64px 0;}
 .sticky-cta{
-  position:fixed; right:18px; bottom:18px; display:flex; gap:10px; align-items:center; background:linear-gradient(90deg, rgba(0,0,0,0.36), rgba(0,0,0,0.2)); padding:10px; border-radius:999px; box-shadow:0 12px 40px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.03);
+  position:fixed;
+  left:18px; /* Alterado de right para left */
+  bottom:18px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  background:linear-gradient(90deg, rgba(0,0,0,0.36), rgba(0,0,0,0.2));
+  padding:10px;
+  border-radius:999px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.03);
+  animation: pulseBtn 1.2s infinite alternate; /* mantém animação neon */
 }
+
 .countdown{display:flex; gap:10px; font-weight:700; margin-top:10px;}
 .countdown .box{background:rgba(255,255,255,0.04); padding:10px 12px; border-radius:8px; color:var(--accent); min-width:50px; text-align:center;}
 footer{padding:28px 0; color:var(--muted); text-align:center; font-size:0.9rem; border-top:1px solid rgba(255,255,255,0.02);}
 @media (max-width:980px){
   .hero-inner{grid-template-columns:1fr;}
   .features{grid-template-columns:1fr;}
-}
-
-/* Chat Bot IA */
-#chat-bot {
-  position: fixed;
-  bottom: 18px;
-  right: 18px;
-  width: 320px;
-  max-width: 90%;
-  background: rgba(0,0,0,0.85);
-  border-radius: 16px;
-  padding: 16px;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-  display: none;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 2000;
-}
-#chat-bot h3 { margin:0 0 8px 0; font-size:1.2rem; }
-.chat-message {
-  background: rgba(255,255,255,0.08);
-  padding: 10px;
-  border-radius: 12px;
-}
-.bot-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.bot-button {
-  background: linear-gradient(90deg,#00b85c,#00d18f);
-  color: #071017;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  text-align: left;
-  transition: transform 0.14s ease;
-  position: relative;
-}
-.bot-button:hover { transform: translateY(-2px); }
-.bot-description {
-  background: rgba(255,255,255,0.05);
-  padding: 10px;
-  border-radius: 10px;
-  display: none;
-  font-size: 0.9rem;
-  margin-top: 6px;
 }
 </style>
 </head>
@@ -114,7 +87,7 @@ footer{padding:28px 0; color:var(--muted); text-align:center; font-size:0.9rem; 
 <!-- Top Bar -->
 <div class="topbar container">
   <div class="badge">Oferta Especial</div>
-  <div class="timer-small" id="top-timer">00:59:59</div>
+  <div class="timer-small" id="top-timer">01:00:00</div>
 </div>
 
 <!-- Hero -->
@@ -122,12 +95,10 @@ footer{padding:28px 0; color:var(--muted); text-align:center; font-size:0.9rem; 
   <div class="hero-inner">
     <div class="hero-copy">
       <h1>Bot Sinais Binance</h1>
-
       <div class="price-line">
         <span class="old-price">R$50</span>
         <span class="new-price">Só hoje R$10</span>
       </div>
-
       <p>Cansado de monitorar dezenas de pares ao mesmo tempo? O Bot Sinais Binance analisa mais de 30 pares simultaneamente e te envia alertas baseados em RSI, EMA e força do mercado, para você decidir se vale a pena agir.</p>
       <a href="https://pay.hub.la/NXT53L9shBeHBzXcN2aG?_path=/checkout/NXT53L9shBeHBzXcN2aG" class="btn-cta">Quero Garantir por R$10</a>
       <div class="countdown" id="hero-timer">
@@ -190,22 +161,12 @@ footer{padding:28px 0; color:var(--muted); text-align:center; font-size:0.9rem; 
   © 2025 Bot Sinais Binance. Todos os direitos reservados.
 </footer>
 
-<!-- Chat Bot IA -->
-<div id="chat-bot">
-  <h3>Olá!</h3>
-  <div class="chat-message" id="chat-message">
-    <!-- Mensagem inicial será inserida via JS -->
-  </div>
-  <div class="bot-buttons" id="bot-buttons">
-    <!-- Botões dos bots serão inseridos aqui via JS -->
-  </div>
-</div>
-
 <script>
-// Play do vídeo
+// Play do vídeo com poster
 const poster = document.getElementById('video-poster');
 const video = document.getElementById('hero-video');
 const playOverlay = document.querySelector('.overlay-play');
+
 playOverlay.addEventListener('click', () => {
   poster.style.display = 'none';
   playOverlay.style.display = 'none';
@@ -213,7 +174,7 @@ playOverlay.addEventListener('click', () => {
   video.play();
 });
 
-// Contador regressivo 1 hora
+// Contador regressivo de 1 hora
 let endTime = new Date().getTime() + 60*60*1000;
 function updateTimer() {
   let now = new Date().getTime();
@@ -229,7 +190,75 @@ function updateTimer() {
 }
 setInterval(updateTimer,1000);
 updateTimer();
+</script>
 
+<!-- Chat Bot IA -->
+<style>
+#chat-bot {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  width: 320px;
+  max-width: 90%;
+  background: rgba(0,0,0,0.85);
+  border-radius: 16px;
+  padding: 16px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 2000;
+  animation: pulseBtn 1.2s infinite alternate;
+}
+#chat-bot h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+}
+.chat-message {
+  background: rgba(255,255,255,0.08);
+  padding: 10px;
+  border-radius: 12px;
+}
+.bot-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bot-button {
+  background: linear-gradient(90deg,#00b85c,#00d18f);
+  color: #071017;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  transition: transform 0.14s ease;
+  position: relative;
+  animation: pulseBtn 1.2s infinite alternate;
+}
+.bot-button:hover {
+  transform: translateY(-2px);
+}
+.bot-description {
+  background: rgba(255,255,255,0.05);
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+</style>
+
+<div id="chat-bot">
+  <h3>Olá!</h3>
+  <div class="chat-message" id="chat-message"></div>
+  <div class="bot-buttons" id="bot-buttons"></div>
+</div>
+
+<script>
 // Saudação
 function getGreeting() {
   const hour = new Date().getHours();
@@ -240,57 +269,24 @@ function getGreeting() {
 
 // Lista de bots
 const bots = [
-  { name: "Sinais Binance", price: "R$10/mês", description: "Monitora mais de 30 pares simultaneamente, envia alertas de RSI, EMA e força do mercado. Ideal para quem quer acompanhar o mercado de forma prática e rápida.", link: "https://hub.la/g/NXT53L9shBeHBzXcN2aG" },
-  { name: "Bot Premium", price: "R$30/mês", description: "Tudo que o Sinais Binance faz, mais análise do MACD, identificação de figuras de candles e envio de sinais pelo Telegram. Mais avançado para quem quer detalhamento completo.", link: "https://hub.la/g/cdMHOsH5ZimPodeR64xr" },
-  { name: "Bot Supra", price: "R$50/mês", description: "Tudo que o Premium faz, com a adição de identificação de figuras gráficas avançadas como ombro-cabeça-ombro, triângulos e outros padrões para decisões mais estratégicas.", link: "https://hub.la/g/0z2LAC71y7XVLNY9Twlu" },
-  { name: "Price Action", price: "R$70/mês", description: "Focado exclusivamente em Price Action, utilizando os indicadores anteriores, ideal para traders que seguem padrões de movimento do mercado de forma precisa.", link: "https://hub.la/g/XbOIwZEpfY7JfYNWuda5" },
-  { name: "Price Action Pro", price: "R$100/mês", description: "Inteligente: identifica padrões de topo duplo, calcula stops estratégicos, evitando armadilhas do mercado e sinaliza a melhor entrada. Ideal para traders experientes que buscam automação inteligente.", link: "https://hub.la/g/DEuzs8Em73MoqaihVOhX" }
+  { name: "Sinais Binance", price: "R$10/mês", description: "Monitora mais de 30 pares simultaneamente, envia alertas de RSI, EMA e força do mercado.", link: "https://hub.la/g/NXT53L9shBeHBzXcN2aG" },
+  { name: "Bot Premium", price: "R$30/mês", description: "Tudo que o Sinais Binance faz, mais análise do MACD, identificação de figuras de candles e envio de sinais pelo Telegram.", link: "https://hub.la/g/cdMHOsH5ZimPodeR64xr" },
+  { name: "Bot Supra", price: "R$50/mês", description: "Tudo que o Premium faz, com adição de identificação de figuras gráficas avançadas como ombro-cabeça-ombro, triângulos e outros padrões.", link: "https://hub.la/g/0z2LAC71y7XVLNY9Twlu" },
+  { name: "Price Action", price: "R$70/mês", description: "Focado exclusivamente em Price Action, ideal para traders que seguem padrões de movimento do mercado de forma precisa.", link: "https://hub.la/g/XbOIwZEpfY7JfYNWuda5" },
+  { name: "Price Action Pro", price: "R$100/mês", description: "Inteligente: identifica padrões de topo duplo, calcula stops estratégicos e sinaliza a melhor entrada. Ideal para traders experientes.", link: "https://hub.la/g/DEuzs8Em73MoqaihVOhX" }
 ];
 
-// Função para animação slide
-function slideToggle(element, duration = 300) {
-  if(window.getComputedStyle(element).display === "none") {
-    element.style.removeProperty('display');
-    let display = window.getComputedStyle(element).display;
-    if(display === 'none') display = 'block';
-    element.style.display = display;
-    let height = element.offsetHeight;
-    element.style.overflow = 'hidden';
-    element.style.height = 0;
-    element.offsetHeight;
-    element.style.transition = `height ${duration}ms`;
-    element.style.height = height + 'px';
-    setTimeout(() => {
-      element.style.removeProperty('height');
-      element.style.removeProperty('overflow');
-      element.style.removeProperty('transition');
-    }, duration);
-  } else {
-    let height = element.offsetHeight;
-    element.style.height = height + 'px';
-    element.style.overflow = 'hidden';
-    element.offsetHeight;
-    element.style.transition = `height ${duration}ms`;
-    element.style.height = 0;
-    setTimeout(() => {
-      element.style.removeProperty('display');
-      element.style.removeProperty('height');
-      element.style.removeProperty('overflow');
-      element.style.removeProperty('transition');
-    }, duration);
-  }
-}
-
-// Exibe chat após 5s
+// Exibe o chat após 5 segundos
 setTimeout(() => {
   const chat = document.getElementById('chat-bot');
   chat.style.display = "flex";
 
-  document.getElementById('chat-message').innerHTML = `${getGreeting()} Se quiser conhecer nossos outros bots da linha, estou aqui para te apresentar.`;
+  const chatMessage = document.getElementById('chat-message');
+  chatMessage.innerHTML = `${getGreeting()} Se quiser conhecer nossos outros bots da linha, estou aqui para te apresentar.`;
 
   const buttonsContainer = document.getElementById('bot-buttons');
 
-  bots.forEach(bot => {
+  bots.forEach((bot) => {
     const btnWrapper = document.createElement('div');
     btnWrapper.style.display = "flex";
     btnWrapper.style.flexDirection = "column";
@@ -304,26 +300,24 @@ setTimeout(() => {
     desc.innerHTML = `${bot.description} <br><a href="${bot.link}" target="_blank" style="color:#00d18f; font-weight:700;">Clique aqui para conhecer</a>`;
 
     btn.addEventListener('click', () => {
-  document.querySelectorAll('.bot-description').forEach(d => {
-    if(d !== desc){
-      d.style.display = 'none'; // fecha todas exceto a clicada
-    }
-  });
-
-  // abre ou fecha só o clicado
-  desc.style.display = (desc.style.display === 'block') ? 'none' : 'block';
-});
-
-
+      // Fecha todos os outros
+      document.querySelectorAll('.bot-description').forEach(d => {
+        if(d !== desc) d.style.display = 'none';
+      });
+      // Toggle do clicado
+      desc.style.display = desc.style.display === 'block' ? 'none' : 'block';
+    });
 
     btnWrapper.appendChild(btn);
     btnWrapper.appendChild(desc);
     buttonsContainer.appendChild(btnWrapper);
   });
+
 }, 5000);
 </script>
 
 </body>
 </html>
+
 
 
