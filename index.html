@@ -56,6 +56,57 @@ footer{padding:28px 0; color:var(--muted); text-align:center; font-size:0.9rem; 
   .hero-inner{grid-template-columns:1fr;}
   .features{grid-template-columns:1fr;}
 }
+
+/* Chat Bot IA */
+#chat-bot {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  width: 320px;
+  max-width: 90%;
+  background: rgba(0,0,0,0.85);
+  border-radius: 16px;
+  padding: 16px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 2000;
+}
+#chat-bot h3 { margin:0 0 8px 0; font-size:1.2rem; }
+.chat-message {
+  background: rgba(255,255,255,0.08);
+  padding: 10px;
+  border-radius: 12px;
+}
+.bot-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bot-button {
+  background: linear-gradient(90deg,#00b85c,#00d18f);
+  color: #071017;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  transition: transform 0.14s ease;
+  position: relative;
+}
+.bot-button:hover { transform: translateY(-2px); }
+.bot-description {
+  background: rgba(255,255,255,0.05);
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
 </style>
 </head>
 <body>
@@ -72,7 +123,6 @@ footer{padding:28px 0; color:var(--muted); text-align:center; font-size:0.9rem; 
     <div class="hero-copy">
       <h1>Bot Sinais Binance</h1>
 
-      <!-- Linha de preço / gatilho -->
       <div class="price-line">
         <span class="old-price">R$50</span>
         <span class="new-price">Só hoje R$10</span>
@@ -140,12 +190,22 @@ footer{padding:28px 0; color:var(--muted); text-align:center; font-size:0.9rem; 
   © 2025 Bot Sinais Binance. Todos os direitos reservados.
 </footer>
 
+<!-- Chat Bot IA -->
+<div id="chat-bot">
+  <h3>Olá!</h3>
+  <div class="chat-message" id="chat-message">
+    <!-- Mensagem inicial será inserida via JS -->
+  </div>
+  <div class="bot-buttons" id="bot-buttons">
+    <!-- Botões dos bots serão inseridos aqui via JS -->
+  </div>
+</div>
+
 <script>
-// Play do vídeo com poster
+// Play do vídeo
 const poster = document.getElementById('video-poster');
 const video = document.getElementById('hero-video');
 const playOverlay = document.querySelector('.overlay-play');
-
 playOverlay.addEventListener('click', () => {
   poster.style.display = 'none';
   playOverlay.style.display = 'none';
@@ -153,7 +213,7 @@ playOverlay.addEventListener('click', () => {
   video.play();
 });
 
-// Contador regressivo de 1 hora
+// Contador regressivo 1 hora
 let endTime = new Date().getTime() + 60*60*1000;
 function updateTimer() {
   let now = new Date().getTime();
@@ -169,8 +229,101 @@ function updateTimer() {
 }
 setInterval(updateTimer,1000);
 updateTimer();
+
+// Saudação
+function getGreeting() {
+  const hour = new Date().getHours();
+  if(hour >= 5 && hour < 12) return "Bom dia!";
+  if(hour >= 12 && hour < 18) return "Boa tarde!";
+  return "Boa noite!";
+}
+
+// Lista de bots
+const bots = [
+  { name: "Sinais Binance", price: "R$10/mês", description: "Monitora mais de 30 pares simultaneamente, envia alertas de RSI, EMA e força do mercado. Ideal para quem quer acompanhar o mercado de forma prática e rápida.", link: "https://hub.la/g/NXT53L9shBeHBzXcN2aG" },
+  { name: "Bot Premium", price: "R$30/mês", description: "Tudo que o Sinais Binance faz, mais análise do MACD, identificação de figuras de candles e envio de sinais pelo Telegram. Mais avançado para quem quer detalhamento completo.", link: "https://hub.la/g/cdMHOsH5ZimPodeR64xr" },
+  { name: "Bot Supra", price: "R$50/mês", description: "Tudo que o Premium faz, com a adição de identificação de figuras gráficas avançadas como ombro-cabeça-ombro, triângulos e outros padrões para decisões mais estratégicas.", link: "https://hub.la/g/0z2LAC71y7XVLNY9Twlu" },
+  { name: "Price Action", price: "R$70/mês", description: "Focado exclusivamente em Price Action, utilizando os indicadores anteriores, ideal para traders que seguem padrões de movimento do mercado de forma precisa.", link: "https://hub.la/g/XbOIwZEpfY7JfYNWuda5" },
+  { name: "Price Action Pro", price: "R$100/mês", description: "Inteligente: identifica padrões de topo duplo, calcula stops estratégicos, evitando armadilhas do mercado e sinaliza a melhor entrada. Ideal para traders experientes que buscam automação inteligente.", link: "https://hub.la/g/DEuzs8Em73MoqaihVOhX" }
+];
+
+// Função para animação slide
+function slideToggle(element, duration = 300) {
+  if(window.getComputedStyle(element).display === "none") {
+    element.style.removeProperty('display');
+    let display = window.getComputedStyle(element).display;
+    if(display === 'none') display = 'block';
+    element.style.display = display;
+    let height = element.offsetHeight;
+    element.style.overflow = 'hidden';
+    element.style.height = 0;
+    element.offsetHeight;
+    element.style.transition = `height ${duration}ms`;
+    element.style.height = height + 'px';
+    setTimeout(() => {
+      element.style.removeProperty('height');
+      element.style.removeProperty('overflow');
+      element.style.removeProperty('transition');
+    }, duration);
+  } else {
+    let height = element.offsetHeight;
+    element.style.height = height + 'px';
+    element.style.overflow = 'hidden';
+    element.offsetHeight;
+    element.style.transition = `height ${duration}ms`;
+    element.style.height = 0;
+    setTimeout(() => {
+      element.style.removeProperty('display');
+      element.style.removeProperty('height');
+      element.style.removeProperty('overflow');
+      element.style.removeProperty('transition');
+    }, duration);
+  }
+}
+
+// Exibe chat após 5s
+setTimeout(() => {
+  const chat = document.getElementById('chat-bot');
+  chat.style.display = "flex";
+
+  document.getElementById('chat-message').innerHTML = `${getGreeting()} Se quiser conhecer nossos outros bots da linha, estou aqui para te apresentar.`;
+
+  const buttonsContainer = document.getElementById('bot-buttons');
+
+  bots.forEach(bot => {
+    const btnWrapper = document.createElement('div');
+    btnWrapper.style.display = "flex";
+    btnWrapper.style.flexDirection = "column";
+
+    const btn = document.createElement('button');
+    btn.className = "bot-button";
+    btn.innerText = `${bot.name} - ${bot.price}`;
+
+    const desc = document.createElement('div');
+    desc.className = "bot-description";
+    desc.innerHTML = `${bot.description} <br><a href="${bot.link}" target="_blank" style="color:#00d18f; font-weight:700;">Clique aqui para conhecer</a>`;
+
+    btn.addEventListener('click', () => {
+  document.querySelectorAll('.bot-description').forEach(d => {
+    if(d !== desc){
+      d.style.display = 'none'; // fecha todas exceto a clicada
+    }
+  });
+
+  // abre ou fecha só o clicado
+  desc.style.display = (desc.style.display === 'block') ? 'none' : 'block';
+});
+
+
+
+    btnWrapper.appendChild(btn);
+    btnWrapper.appendChild(desc);
+    buttonsContainer.appendChild(btnWrapper);
+  });
+}, 5000);
 </script>
 
 </body>
 </html>
+
 
